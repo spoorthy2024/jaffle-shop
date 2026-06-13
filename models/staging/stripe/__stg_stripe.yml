@@ -1,0 +1,25 @@
+models:
+  - name: stg_stripe__payments
+    description: Payments information related to orders placed
+    columns:
+      - name: payment_id
+        description: This is the primary key
+        data_tests:
+          - unique
+          - not_null
+      - name : order_id
+        description: The Foreign key used to reference the orders model
+        data_tests:
+          - relationships:
+              arguments: 
+                to: ref('stg_jaffle_shop__orders')
+                field: order_id
+      - name : payment_method
+        description: "{{doc('payment_methods')}}"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['bank_transfer','credit_card','coupon','gift_card']
+          
+
+          
