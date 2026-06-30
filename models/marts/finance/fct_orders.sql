@@ -1,3 +1,14 @@
+{{
+    config(
+        materialized='incremental',
+        incremental_strategy = 'microbatch',
+        event_time = 'order_date',
+        begin ='2018-01-01',
+        batch_size = 'day',
+        lookback = 2,
+        full_refresh = false
+    )
+}}
 with payments as (
     select * from {{ ref('stg_stripe__payments') }}
 ),
@@ -19,3 +30,4 @@ final as (
     left join order_payments using(order_id)
 )
 select * from final
+order by order_date desc
